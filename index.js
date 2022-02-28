@@ -10,8 +10,35 @@ robot_jump = 128
 
 console.log(canvas.width)
 console.log(canvas.height)
+
 var squares = []
 var moves_history = []
+var stack_UD = []
+var stack_LR = []
+
+function stack_algo(step_direction){
+    if(step_direction == 'right'){ //right
+        stack_LR.push(step_direction);
+    }
+
+    else if(step_direction == 'down'){ //down
+        stack_UD.push(step_direction);
+    }
+
+    else if(step_direction == 'left'){ //left
+        if(stack_LR.length != 0){
+            popped_element = stack_LR.pop()
+        }
+        // stack_LR.push('left');
+    }
+
+    else if(step_direction == 'up'){ //up
+        if(stack_UD.length != 0){
+            popped_element = stack_UD.pop()
+        }
+    }
+}
+
 
 function sleep(delay) {
     setTimeout(() => { console.log("World!"); }, delay);
@@ -89,31 +116,35 @@ addEventListener('keypress', ({key}) =>{
             
         case 'w':
             player.velocity.y = -robot_jump
+            stack_algo('up');
           // await sleep(1000)
-            moves_history.push('w')
+            // moves_history.push('w')
             player.update()
             break
 
         case 'a':
             player.velocity.x = -robot_jump
-            moves_history.push('a')
+            stack_algo('left');// moves_history.push('a')
             player.update()
             break
 
         case 's':
             player.velocity.y = robot_jump
-            moves_history.push('s')
+            // moves_history.push('s')
+            stack_algo('down');
             player.update()
             break
 
         case 'd':
             player.velocity.x = robot_jump
-            moves_history.push('d')
+            // moves_history.push('d')
+            stack_algo('right');
             player.update()
             break 
 
     }
-    console.log(moves_history)
+    console.log(stack_UD)
+    console.log(stack_LR)
     // console.log(player.velocity)
 })
 
@@ -125,25 +156,21 @@ addEventListener('keyup', ({key}) =>{
         case 'w':
             player.velocity.y = 0
             player.update()
-
             break
 
         case 'a':
             player.velocity.x = 0
             player.update()
-
             break
 
         case 's':
             player.velocity.y = 0
             player.update()
-
             break
 
         case 'd':
             player.velocity.x = 0
             player.update()
-
             break 
     }
 //     /* console.log(player.velocity) */
