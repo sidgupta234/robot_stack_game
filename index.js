@@ -11,6 +11,7 @@ robot_jump = 128
 console.log(canvas.width)
 console.log(canvas.height)
 var squares = []
+var moves_history = []
 
 function sleep(delay) {
     setTimeout(() => { console.log("World!"); }, delay);
@@ -64,64 +65,87 @@ const player = new Player({
     }
 )
 
-function animate(){
-    requestAnimationFrame(animate)
-    c.clearRect(0, 0, canvas.width, canvas.height)
-    draw_squares()
-    player.update()
-}
+// function animate(){
+//     requestAnimationFrame(animate)
+    // c.clearRect(0, 0, canvas.width, canvas.height)
+    // draw_squares()
+    // player.update()
+// }
 
-animate()
+// animate()
+
+//requestAnimationFrame(animate)
+draw_squares()
+player.update()
 
 addEventListener('keypress', ({key}) =>{
+    c.clearRect(0, 0, canvas.width, canvas.height)
+    draw_squares()
+
     switch (key){
+        case 'q':
+            player.update()
+            break
+            
         case 'w':
             player.velocity.y = -robot_jump
-            isPause = true;
           // await sleep(1000)
+            moves_history.push('w')
+            player.update()
             break
 
         case 'a':
             player.velocity.x = -robot_jump
-            isPause = true;
+            moves_history.push('a')
+            player.update()
             break
 
         case 's':
             player.velocity.y = robot_jump
-            isPause = true;
+            moves_history.push('s')
+            player.update()
             break
 
         case 'd':
             player.velocity.x = robot_jump
-            isPause = true;
+            moves_history.push('d')
+            player.update()
             break 
 
     }
-
+    console.log(moves_history)
     // console.log(player.velocity)
-
 })
 
 addEventListener('keyup', ({key}) =>{
+    c.clearRect(0, 0, canvas.width, canvas.height)
+    draw_squares()
 
     switch (key){
         case 'w':
             player.velocity.y = 0
+            player.update()
+
             break
 
         case 'a':
             player.velocity.x = 0
+            player.update()
+
             break
 
         case 's':
             player.velocity.y = 0
+            player.update()
+
             break
 
         case 'd':
             player.velocity.x = 0
+            player.update()
+
             break 
     }
-
 //     /* console.log(player.velocity) */
 
 })
