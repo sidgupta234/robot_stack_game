@@ -16,17 +16,26 @@ var moves_history = []
 var stack_UD = []
 var stack_LR = []
 
-function valid_move(old_val, new_val){
+function valid_move(old_val, new_val, dir){
     //console.log(old_val - new_val)
-
-    if(old_val + new_val > 0 &&  old_val + new_val < canvas.width){
-        return true
+    if(dir == 'x'){
+        if(old_val + new_val > 0 &&  old_val + new_val < canvas.width){
+            return true
+        }
     }
+
+    if(dir == 'y'){
+        if(old_val + new_val > 0 &&  old_val + new_val < canvas.height){
+            return true
+        }
+    }
+
 }
 
 function stack_algo(step_direction){
+
     if(step_direction == 'right' && stack_LR.length < 7){ //right
-        stack_LR.push(step_direction);
+        stack_LR.push(step_direction);    
     }
 
     else if(step_direction == 'down' && stack_UD.length <4){ //down
@@ -85,11 +94,11 @@ class Player {
         // this.position.x += this.velocity.x
         // this.position.y += this.velocity.y
 
-        if(valid_move(this.position.x, this.velocity.x)){
+        if(valid_move(this.position.x, this.velocity.x, 'x')){
             this.position.x += this.velocity.x
         }
 
-        if(valid_move(this.position.y, this.velocity.y)){
+        if(valid_move(this.position.y, this.velocity.y, 'y')){
             this.position.y += this.velocity.y
         }
     }
@@ -124,6 +133,13 @@ player.update()
 addEventListener('keypress', ({key}) =>{
     c.clearRect(0, 0, canvas.width, canvas.height)
     draw_squares()
+    c.fillStyle = "black";
+    c.font = "bold 16px Arial";
+    //c.fillText("Zibri", 0, 0);
+
+    c.fillText("Stack 1 state: " + stack_UD, 50, 50);
+    c.fillText("Stack 2 state: " + stack_LR, 50, 100);
+    //c.fillText("Zibri", 0, 0);
 
     switch (key){
         case 'q':
@@ -170,7 +186,13 @@ addEventListener('keypress', ({key}) =>{
 addEventListener('keyup', ({key}) =>{
     c.clearRect(0, 0, canvas.width, canvas.height)
     draw_squares()
+    c.fillStyle = "black";
+    c.font = "bold 16px Arial";
+    //c.fillText("Zibri", 0, 0);
 
+    c.fillText("Stack 1 state: " + stack_UD, 50, 50);
+    c.fillText("Stack 2 state: " + stack_LR, 50, 100);
+    //c.fillText("Zibri", 0, 0);
     switch (key){
         case 'w':
             player.velocity.y = 0
