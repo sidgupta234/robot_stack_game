@@ -8,20 +8,28 @@ canvas.width = 1024
 canvas.height = 768
 robot_jump = 128
 
-console.log(canvas.width)
-console.log(canvas.height)
+// console.log(canvas.width)
+// console.log(canvas.height)
 
 var squares = []
 var moves_history = []
 var stack_UD = []
 var stack_LR = []
 
+function valid_move(old_val, new_val){
+    //console.log(old_val - new_val)
+
+    if(old_val + new_val > 0 &&  old_val + new_val < canvas.width){
+        return true
+    }
+}
+
 function stack_algo(step_direction){
-    if(step_direction == 'right'){ //right
+    if(step_direction == 'right' && stack_LR.length < 7){ //right
         stack_LR.push(step_direction);
     }
 
-    else if(step_direction == 'down'){ //down
+    else if(step_direction == 'down' && stack_UD.length <4){ //down
         stack_UD.push(step_direction);
     }
 
@@ -39,10 +47,9 @@ function stack_algo(step_direction){
     }
 }
 
-
-function sleep(delay) {
-    setTimeout(() => { console.log("World!"); }, delay);
-}
+// function sleep(delay) {
+//     setTimeout(() => { console.log("World!"); }, delay);
+// }
 
 function draw_square(x, y, color, width, height, c){
     c.fillStyle = color;
@@ -74,8 +81,17 @@ class Player {
 
     update(){
         this.draw()
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
+
+        // this.position.x += this.velocity.x
+        // this.position.y += this.velocity.y
+
+        if(valid_move(this.position.x, this.velocity.x)){
+            this.position.x += this.velocity.x
+        }
+
+        if(valid_move(this.position.y, this.velocity.y)){
+            this.position.y += this.velocity.y
+        }
     }
 }
 
@@ -115,11 +131,14 @@ addEventListener('keypress', ({key}) =>{
             break
             
         case 'w':
-            player.velocity.y = -robot_jump
-            stack_algo('up');
-          // await sleep(1000)
+            if(player.position.y + player.velocity.y - robot_jump > 65){
+                player.velocity.y = -robot_jump
+                stack_algo('up');
+            // await sleep(1000)
             // moves_history.push('w')
-            player.update()
+                player.update()
+    
+            }
             break
 
         case 'a':
