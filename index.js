@@ -16,6 +16,18 @@ var moves_history = []
 var stack_UD = []
 var stack_LR = []
 
+function screen_display_elements(){
+    c.clearRect(0, 0, canvas.width, canvas.height)
+    draw_squares()
+    c.fillStyle = "black";
+    c.font = "bold 16px Arial";
+    //c.fillText("Zibri", 0, 0);
+    c.fillText("Instruction: Press W(up), A(left), S(down), D(right) for moving the robot in the respective direction, ", 50, 40);
+    c.fillText("Stack 1 state: " + stack_UD, 50, 70);
+    c.fillText("Stack 2 state: " + stack_LR, 50, 100);
+}
+
+
 function valid_move(old_val, new_val, dir){
     //console.log(old_val - new_val)
     if(dir == 'x'){
@@ -131,15 +143,8 @@ draw_squares()
 player.update()
 
 addEventListener('keypress', ({key}) =>{
-    c.clearRect(0, 0, canvas.width, canvas.height)
-    draw_squares()
-    c.fillStyle = "black";
-    c.font = "bold 16px Arial";
     //c.fillText("Zibri", 0, 0);
-
-    c.fillText("Stack 1 state: " + stack_UD, 50, 50);
-    c.fillText("Stack 2 state: " + stack_LR, 50, 100);
-    //c.fillText("Zibri", 0, 0);
+    screen_display_elements();
 
     switch (key){
         case 'q':
@@ -184,15 +189,9 @@ addEventListener('keypress', ({key}) =>{
 })
 
 addEventListener('keyup', ({key}) =>{
-    c.clearRect(0, 0, canvas.width, canvas.height)
-    draw_squares()
-    c.fillStyle = "black";
-    c.font = "bold 16px Arial";
     //c.fillText("Zibri", 0, 0);
+    screen_display_elements();
 
-    c.fillText("Stack 1 state: " + stack_UD, 50, 50);
-    c.fillText("Stack 2 state: " + stack_LR, 50, 100);
-    //c.fillText("Zibri", 0, 0);
     switch (key){
         case 'w':
             player.velocity.y = 0
